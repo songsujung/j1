@@ -44,5 +44,15 @@ public class TodoServiceImpl implements TodoService {
         response.setDtoList(dtoList);
         return response;
     }
+
+    @Override
+    public TodoDTO register(TodoDTO dto) {
+        
+        Todo entity = modelMapper.map(dto, Todo.class); // title값만 있는 상태
+
+        Todo result = todoRepository.save(entity); // db에 저장되면서 tno값이 생성(autoIncrement를 해줬기 때문)
+
+        return modelMapper.map(result, TodoDTO.class); // tno + title 값을 사용하기 위해 TodoDTO형식으로 다시 변환
+    }
     
 }

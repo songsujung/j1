@@ -8,5 +8,7 @@ import org.zerock.j1.dto.TodoDTO;
 public interface TodoService {
 
     PageResponseDTO<TodoDTO> getList();
+
+    TodoDTO register(TodoDTO dto);
     
 }
