@@ -9,6 +9,18 @@ public interface TodoService {
 
     PageResponseDTO<TodoDTO> getList();
 
+    // 등록
     TodoDTO register(TodoDTO dto);
+
+    // 조회
+    TodoDTO getOne(Long tno);
+
+    // 삭제
+    void remove(Long tno);
+
+    // 수정
+    void modify(TodoDTO dto);
+
+
     
 }
