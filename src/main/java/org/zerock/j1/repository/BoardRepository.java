@@ -31,10 +31,13 @@ public interface BoardRepository extends JpaRepository<Board,Long>, BoardSearch{
     @Query("update Board b set b.title = :title where b.bno =:bno")
     int modifyTitle(@Param("title")String title, @Param("bno")Long bno);
 
-    // 내용으로 검색하는데 페이징 처리까지 해줌 Pageable을 사용했기에
+    // Pageable을 사용했기 때문에 내용으로 검색하는데 페이징 처리까지 해준다.
     Page<Board> findByContentContaining(String content, Pageable pageable);
 
     @Query(value = "select * from t_board", nativeQuery = true)
     List<Object[]> listNative();
+
+    @Query("select b.bno, b.title, b.writer, count(r) from Board b left outer join Reply r on r.board = b group by b order by b.bno desc")
+    List<Object[]> getListWithRcnt();
 
 }
