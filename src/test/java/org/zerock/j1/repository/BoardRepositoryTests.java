@@ -45,7 +45,7 @@ public class BoardRepositoryTests {
 
         Long bno = 1L;
 
-        // NUll 값이 나올수 있기에 Optional을 사용
+        // NUll 값이 나올수 있기 때문에 Optional을 사용
         Optional<Board> result = boardRepository.findById(bno);
 
         log.info("--------------");
@@ -111,7 +111,8 @@ public class BoardRepositoryTests {
         @Test
     public void testQuery1_3() {
 
-        Pageable pageable = PageRequest.of(0, 10, Sort.by("bno").descending());
+        Pageable pageable = PageRequest.of(0, 10, 
+        Sort.by("bno").descending());
         
         Page<Object[]> result = boardRepository.listTitle2("1", pageable);
 
@@ -166,4 +167,23 @@ public class BoardRepositoryTests {
         result.get().forEach(b -> log.info(b));
     }
     
+    @Test
+    public void testListWithRcnt() {
+
+        List<Object[]> result = boardRepository.getListWithRcnt();
+
+        for (Object[] result2 : result) {
+            log.info(Arrays.toString(result2));
+        }
+
+    }
+
+    @Test
+    public void testListWithRcntSearch(){
+
+        Pageable pageable = PageRequest.of(0, 10, 
+        Sort.by("bno").descending());
+
+        boardRepository.searchWithRcnt("tcw", "1", pageable);
+    }
 }
