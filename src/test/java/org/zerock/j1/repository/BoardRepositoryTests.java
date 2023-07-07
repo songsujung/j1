@@ -13,6 +13,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.Commit;
 import org.zerock.j1.domain.Board;
+import org.zerock.j1.dto.BoardListRcntDTO;
+import org.zerock.j1.dto.BoardReadDTO;
+import org.zerock.j1.dto.PageRequestDTO;
+import org.zerock.j1.dto.PageResponseDTO;
 
 import jakarta.transaction.Transactional;
 import lombok.extern.log4j.Log4j2;
@@ -25,9 +29,9 @@ public class BoardRepositoryTests {
     private BoardRepository boardRepository;
 
     @Test
-    public void testInsert(){
+    public void testInsert() {
 
-        for(int i = 0; i < 100; i++){
+        for(int i = 0; i < 1; i++){
             Board board = Board.builder()
             .title("Sample Title"+i)
             .content("Sample Content"+i)
@@ -41,7 +45,7 @@ public class BoardRepositoryTests {
     }
 
     @Test
-    public void testRead(){
+    public void testRead() {
 
         Long bno = 1L;
 
@@ -58,7 +62,7 @@ public class BoardRepositoryTests {
     }
 
     @Test
-    public void testUpdate(){
+    public void testUpdate() {
 
         // 먼저 조회한 후, 수정한 뒤 저장한다.
 
@@ -146,7 +150,7 @@ public class BoardRepositoryTests {
     }
 
     @Test
-    public void testNative(){
+    public void testNative() {
         
         List<Object[]> result = boardRepository.listNative();
 
@@ -155,7 +159,7 @@ public class BoardRepositoryTests {
     }
 
     @Test
-    public void testSearch1(){
+    public void testSearch1() {
 
         Pageable pageable = PageRequest.of(0, 10, 
         Sort.by("bno").descending());
@@ -179,11 +183,33 @@ public class BoardRepositoryTests {
     }
 
     @Test
-    public void testListWithRcntSearch(){
+    public void testListWithRcntSearch() {
 
         Pageable pageable = PageRequest.of(0, 10, 
         Sort.by("bno").descending());
 
         boardRepository.searchWithRcnt("tcw", "1", pageable);
+    }
+
+    @Test
+    public void test0706_1() {
+
+        PageRequestDTO pageRequest = new PageRequestDTO();
+
+        PageResponseDTO<BoardListRcntDTO> responseDTO = boardRepository.searchDTORcnt(pageRequest);
+
+        log.info(responseDTO);
+    }
+
+    @Test
+    public void testReadOne() {
+        Long bno = 77L;
+
+        BoardReadDTO dto = boardRepository.readOne(bno);
+
+        log.info(dto);
+        log.info(dto.getRegDate());
+        log.info(dto.getModDate());
+        log.info(dto.getClass().getName());
     }
 }
